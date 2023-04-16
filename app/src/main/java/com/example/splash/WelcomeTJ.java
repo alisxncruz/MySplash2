@@ -1,11 +1,15 @@
 package com.example.splash;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,9 +37,10 @@ public class WelcomeTJ extends AppCompatActivity {
     String aux;
     public boolean bandera = false;
     public int pos=0;
+    protected ActivityResultLauncher<Intent> someActivityResultLauncher;
     public static infoRegistro infoRegistro= null;
     EditText red,contrasena;
-    Button mas,modifica,elimina;
+    Button mas,modifica,elimina, tomaF, agregaF;
     infoPass pass = new infoPass();
 
     @SuppressLint("WrongViewCast")
@@ -60,6 +65,8 @@ public class WelcomeTJ extends AppCompatActivity {
         mas = findViewById(R.id.buttonA);
         modifica = findViewById(R.id.buttonM);
         elimina = findViewById(R.id.buttonE);
+        tomaF = findViewById(R.id.tomaFoto);
+        agregaF = findViewById(R.id.agregaGal);
         listView = (ListView) findViewById(R.id.listViewId);
 
         BDContras bdContras = new BDContras(WelcomeTJ.this);
@@ -69,9 +76,9 @@ public class WelcomeTJ extends AppCompatActivity {
         modifica.setEnabled(false);
         elimina.setEnabled(false);
         if(listo==null){
-            Toast.makeText(getApplicationContext(), "Para agregar una contraseña de clic en el boton +", Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(), "Escriba en los campos", Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(), String.valueOf(infoRegistro.getId_usr()), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Para agregar una contraseña de clic en el boton +", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Escriba en los campos", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), String.valueOf(infoRegistro.getId_usr()), Toast.LENGTH_LONG);
         }
         Toast.makeText(getApplicationContext(), "Para modificar o eliminar una contraseña de click en ella", Toast.LENGTH_LONG).show();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -162,6 +169,14 @@ public class WelcomeTJ extends AppCompatActivity {
                 }
             }
         });
+
+        tomaF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
+                someActivityResultLauncher.launch( cameraIntent );
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -177,17 +192,52 @@ public class WelcomeTJ extends AppCompatActivity {
     {
         int id = item.getItemId();
         if(id==R.id.item2){
-            Toast.makeText(getApplicationContext(), "API", Toast.LENGTH_LONG).show();
-            Intent intent= new Intent(WelcomeTJ.this,Login.class);
+            Intent intent= new Intent(WelcomeTJ.this,mainApi.class);
             startActivity(intent);
             //List2Json(myInfo,list);
             return true;
         }
         if(id==R.id.item3){
+            Intent intent= new Intent(WelcomeTJ.this,mapa.class);
+            startActivity(intent);
+            return true;
+        }
+        if(id==R.id.item4){
             Intent intent= new Intent(WelcomeTJ.this,Login.class);
             startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Permisos permisos = new Permisos();
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            permisos.permisoDeCamaraConcedido(getApplicationContext());
+        } else {
+            permisos.permisoDeCamaraDenegado(getApplicationContext());
+        }
+    }
+
+    public void tomarfoto(View view) {
+
+    }
+
+    public void elegirfoto(View view) {
+        cargarImagen();
+    }
+    private void cargarImagen() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/");
+        startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicacion"),10);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            Uri path=data.getData();
+        }
     }
 }

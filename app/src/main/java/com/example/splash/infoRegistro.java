@@ -12,6 +12,24 @@ public class infoRegistro implements Serializable
     private int sexo;
     private String contra;
     private int activado;
+    private String longitud;
+    private String latitud;
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
 
     public int getId_usr() {
         return id_usr;

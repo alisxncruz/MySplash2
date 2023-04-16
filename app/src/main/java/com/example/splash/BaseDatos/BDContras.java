@@ -41,7 +41,7 @@ public class BDContras extends UsuarioService
         List<infoPass>contras=null;
         infoPass ipass = null;
         database = getReadableDatabase();
-        cursor = database.rawQuery("SELECT*FROM "+TABLE_CONTRA + " WHERE id = " +id, null);
+        cursor = database.rawQuery("SELECT * FROM " + TABLE_CONTRA + " WHERE id = " + id, null);
         if( cursor == null )
         {
             return new ArrayList<infoPass>();
