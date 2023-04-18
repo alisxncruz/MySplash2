@@ -1,10 +1,13 @@
 package com.example.splash.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.splash.R;
@@ -56,11 +59,16 @@ public class MyAdapter extends BaseAdapter implements Serializable
     public View getView(int i, View view, ViewGroup viewGroup) {
         TextView textView = null;
         TextView textView1 = null;
+        ImageView blue = null;
+        byte[] imagenBytes = list.get(i).getData();
+        Bitmap imagenBitmap = BitmapFactory.decodeByteArray(imagenBytes, 0, imagenBytes.length);
         view = layoutInflater.inflate(R.layout.activity_list_view, null);
         textView = view.findViewById(R.id.redS);
         textView1 = view.findViewById(R.id.contra);
         textView.setText(String.valueOf(list.get(i).getRed()));
         textView1.setText(String.valueOf((list.get(i).getContra())));
+        blue = view.findViewById(R.id.blue);
+        blue.setImageBitmap(imagenBitmap);
         return view;
     }
 }

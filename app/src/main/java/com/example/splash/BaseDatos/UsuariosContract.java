@@ -52,6 +52,8 @@ public class UsuariosContract implements Serializable {
                     "id_contra INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "contrasena TEXT NOT NULL," +
                     "red TEXT NOT NULL," +
+                    "long DOUBLE," +
+                    "lat DOUBLE," +
                     "id INTEGER NOT NULL)";
             return table;
         }
@@ -60,6 +62,8 @@ public class UsuariosContract implements Serializable {
             ContentValues values = new ContentValues();
             values.put("contrasena", pass.getContra());
             values.put("red", pass.getRed());
+            values.put("long", pass.getLongitud());
+            values.put("lat", pass.getLatitud());
             values.put("id", pass.getId_red());
             return values;
         }
