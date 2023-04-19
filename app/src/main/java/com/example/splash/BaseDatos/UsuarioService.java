@@ -23,8 +23,24 @@ public class UsuarioService extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(UsuariosContract.UsuarioEntry.getCreateTable());
-        sqLiteDatabase.execSQL(UsuariosContract.PassEntry.getCreateTable());
+        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_USERS + "(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "usuario TEXT NOT NULL UNIQUE, " +
+                "contrasena TEXT NOT NULL, " +
+                "correo TEXT NOT NULL, " +
+                "sexo INTEGER, " +
+                "terminos INTEGER, " +
+                "nombre TEXT, " +
+                "edad TEXT" +
+                ")");
+        sqLiteDatabase.execSQL("CREATE TABLE "+TABLE_CONTRA+"(" +
+                "id_contra INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "contrasena TEXT NOT NULL," +
+                "red TEXT NOT NULL," +
+                "img BLOB," +
+                "long DOUBLE," +
+                "lat DOUBLE," +
+                "id INTEGER NOT NULL)");
     }
 
     @Override

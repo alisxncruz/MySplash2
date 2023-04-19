@@ -22,11 +22,18 @@
         android:theme="@style/Theme.AppCompat"
         tools:targetApi="31">
         <activity
-            android:name=".mapa"
+            android:name=".Restaura"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+        </activity>
+        <activity
+            android:name=".mapa"
+            android:exported="false">
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyA3gUrxqZd3WYLrpiAq2KuqC3wF1LIE72o" />
         </activity>
         <activity
             android:name=".mainApi"

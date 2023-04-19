@@ -38,9 +38,9 @@ public class OlvideContra extends AppCompatActivity {
     public static String cadena= null;
     public MyDesUtil myDesUtil= new MyDesUtil().addStringKeyBase64(Registro.KEY);
     public String usr=null;
-    public String correo,mensaje;
+    public String correo,mensaje, contra, nueva, nuevaa;
     EditText usuario,email;
-    Button button,button1;
+    Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,19 +62,20 @@ public class OlvideContra extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Complete algún campo", Toast.LENGTH_LONG).show();
                 }else{
                     if(User == null){
-                        Toast.makeText(getApplicationContext(), "El usuario o correo no existen", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Revise bien sus datos, no coinciden", Toast.LENGTH_LONG).show();
                     }else{
                         correo=User.getCorreo();
-                        String contra=User.getContra();
-                        String nueva = "";
-                        for (int i = 0; i < 5; i++) {
-                            Random random = new Random();
-                            char ch = (char) (random.nextInt(26) + 'a');
-                            nueva += String.valueOf(ch);
-                        }
-                        nueva += String.format("%d",(int)(Math.random()*1000));
-                        mensaje="<html>\n" +
-                                "    <head>\n" +
+                        contra=User.getContra();
+                        nueva = String.format("%d", (int)(Math.random()*1000));
+                        nuevaa = Sha.bytesToHex(Sha.createSha1(nueva));
+                        mensaje="<!DOCTYPE html>\n" +
+                                "<html lang =\"en\">\n" +
+                                "\n" +
+                                "  <head>\n" +
+                                "    <meta charset = \"UTF-8\">\n" +
+                                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                                "    <meta name=\"viewport\" content=\"width=device-width, inicial scale=1.0\">\n" +
+                                "    <title>Codigo de recuperación</title>" +
                                 "    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n" +
                                 "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n" +
                                 "    <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap\" rel=\"stylesheet\">\n" +
@@ -86,25 +87,25 @@ public class OlvideContra extends AppCompatActivity {
                                 "        <meta charset=\"UTF-8\">\n" +
                                 "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
                                 "        \n" +
-                                "    </head>\n" +
+                                "  </head>\n" +
                                 "    \n" +
                                 "    <body >\n" +
                                 "        <div style=\"text-align: center;\"><center>\n" +
                                 "            <p>RECUPERANDO TU CONTRASEÑA</p>\n" +
                                 "            <img src=\"https://cdn-icons-png.flaticon.com/512/616/616545.png\" width=\"150\" height=\"150\"  />\n" +
                                 "            <br>\n" +
-                                "            <p>Tu nueva contraseña es: "+ nueva +"</p>\n" +
+                                "            <p>Código de recuperación: "+ nueva +"</p>\n" +
                                 "            </center>\n" +
                                 "        </div>\n" +
                                 "    </body>\n" +
                                 "</html>\n";
                         correo=myDesUtil.cifrar(correo);
                         mensaje=myDesUtil.cifrar(mensaje);
-                        boolean f = dbUsuarios.EditUser(usr,nueva);
+                        boolean f = dbUsuarios.EditUser(usr,nuevaa);
                         if(f){
                             if(sendInfo(correo,mensaje)){
-                                Toast.makeText(getApplicationContext(), "Se ha enviado una contraseña a su correo", Toast.LENGTH_LONG).show();
-                                Intent in = new Intent(OlvideContra.this, Login.class);
+                                Toast.makeText(getApplicationContext(), "Se ha enviado el código a su correo", Toast.LENGTH_LONG).show();
+                                Intent in = new Intent(OlvideContra.this, Restaura.class);
                                 startActivity(in);
                             }else{Toast.makeText(getApplicationContext(), "Error con sendinfo", Toast.LENGTH_LONG).show();}
 

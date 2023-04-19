@@ -62,7 +62,7 @@ public class BDContras extends UsuarioService
             ipass.setId_contra(cursor.getInt(0));
             ipass.setContra(cursor.getString(1));
             ipass.setRed(cursor.getString(2));
-            ipass.setImage(cursor.getInt(3));
+            ipass.setData(cursor.getBlob(3));
             ipass.setLongitud(cursor.getDouble(4));
             ipass.setLatitud(cursor.getDouble(5));
             ipass.setId_red(cursor.getInt(6));

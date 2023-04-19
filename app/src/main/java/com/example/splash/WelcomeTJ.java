@@ -36,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.splash.Adapter.MyAdapter;
 import com.example.splash.BaseDatos.BDContras;
 import com.example.splash.Des.MyDesUtil;
 
@@ -102,22 +101,18 @@ public class WelcomeTJ extends AppCompatActivity implements LocationListener {
         BDContras bdContras = new BDContras(WelcomeTJ.this);
         listo = bdContras.getContras(infoRegistro.getId_usr());
 
+        if (listo == null) {
+            Toast.makeText(getApplicationContext(), "Para agregar una contraseña de clic en el boton +", Toast.LENGTH_LONG);
+
+        }
+        Toast.makeText(getApplicationContext(), "Para modificar o eliminar una contraseña de click en ella", Toast.LENGTH_LONG).show();
+
         listView = (ListView) findViewById(R.id.listViewId);
         MyAdapter myAdapter = new MyAdapter(listo, getBaseContext());
         listView.setAdapter(myAdapter);
         modifica.setEnabled(false);
         elimina.setEnabled(false);
-        agregaF.setEnabled(false);
-        tomaF.setEnabled(false);
         verU.setEnabled(false);
-
-        if (listo == null) {
-            Toast.makeText(getApplicationContext(), "Para agregar una contraseña de clic en el boton +", Toast.LENGTH_LONG);
-            Toast.makeText(getApplicationContext(), "Escriba en los campos", Toast.LENGTH_LONG);
-            Toast.makeText(getApplicationContext(), String.valueOf(infoRegistro.getId_usr()), Toast.LENGTH_LONG);
-        }
-        Toast.makeText(getApplicationContext(), "Para modificar o eliminar una contraseña de click en ella", Toast.LENGTH_LONG).show();
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -128,8 +123,8 @@ public class WelcomeTJ extends AppCompatActivity implements LocationListener {
                 toast(i);
                 modifica.setEnabled(true);
                 elimina.setEnabled(true);
-                agregaF.setEnabled(true);
-                tomaF.setEnabled(true);
+                agregaF.setEnabled(false);
+                tomaF.setEnabled(false);
                 verU.setEnabled(true);
                 Toast.makeText(getApplicationContext(), "Para guardar los cambios de click en guardar cambios", Toast.LENGTH_LONG).show();
             }
@@ -236,10 +231,6 @@ public class WelcomeTJ extends AppCompatActivity implements LocationListener {
                         listo = dbContras.getContras(infoRegistro.getId_usr());
                         MyAdapter myAdapter = new MyAdapter(listo, getBaseContext());
                         listView.setAdapter(myAdapter);
-                        red.setText("");
-                        contrasena.setText("");
-                        stopGps();
-                        Toast.makeText(getApplicationContext(), pass.getRed() + " " + pass.getContra(), Toast.LENGTH_LONG).show();
                         Toast.makeText(WelcomeTJ.this, "Contraseña guardada", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(WelcomeTJ.this, "ERROR AL GUARDAR REGISTRO", Toast.LENGTH_LONG).show();
@@ -248,13 +239,6 @@ public class WelcomeTJ extends AppCompatActivity implements LocationListener {
             }
         });
 
-        tomaF.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                someActivityResultLauncher.launch(cameraIntent);
-            }
-        });
 
         verU.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -345,9 +329,8 @@ public class WelcomeTJ extends AppCompatActivity implements LocationListener {
             infop.setLatitud(latitud);
             Toast.makeText(this, String.valueOf(longitud), Toast.LENGTH_SHORT).show();
             Toast.makeText(this, String.valueOf(latitud), Toast.LENGTH_SHORT).show();
-            //stopGps();
-        } else
-            return;
+        }
+            stopGps();
     }
 
     private void startGps() {
